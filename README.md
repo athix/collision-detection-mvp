@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Pick a visualizer & language
+- [X] ~Pick a visualizer & language~ **(Python w/ Panda3D)**
 - [ ] Data format to store object meta and positional information.
 - [ ] Visualizer for data format.
 - [ ] Collision functions
