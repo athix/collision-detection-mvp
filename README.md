@@ -1,7 +1,7 @@
 # TODO
 
 - [X] ~Pick a visualizer & language~ **(Python w/ Panda3D)**
-- [ ] Data format to store object meta and positional information.
+- [X] ~Data format to store object meta and positional information.~ **(YAML)**
 - [ ] Visualizer for data format.
 - [ ] Collision functions
   - [ ] Fast path overlap detection (render paths and max radius of objects as 3d objects, check for overlap)
