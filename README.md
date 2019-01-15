@@ -1,4 +1,15 @@
-# TODO
+# Collision detection MVP
+
+Minimal codebase to visualize and simulate continuous collision detection.
+
+## Requirements
+
+* Python3
+* Pip3
+* PyYAML - `pip3 install pyyaml`
+* Panda3D - `pip3 install panda3d`
+
+## TODO
 
 - [X] ~Pick a visualizer & language~ **(Python w/ Panda3D)**
 - [X] ~Data format to store object meta and positional information.~ **(YAML)**
@@ -11,3 +22,4 @@
   - [ ] 2 body head-on collision
   - [ ] 3d game of pool (multiple indirect collisions, no gravity)
   - [ ] 2d game of pool (gravity + immovable table)
+
