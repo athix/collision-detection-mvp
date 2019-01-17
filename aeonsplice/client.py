@@ -16,6 +16,7 @@ class MyApp(ShowBase):
         # battle.render_scene(1)
         self.derp = 1
         self.derpCounter = 0
+        self.battle.render_scene(self.derp)
 
         # Add the spinCameraTask procedure to the task manager.
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
