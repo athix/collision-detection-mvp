@@ -5,7 +5,8 @@ from direct.task import Task
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from battleloader import BattleLoader
+# from battleloader import BattleLoader
+from battle import Battle
 
 class MyApp(ShowBase):
     def __init__(self):
@@ -40,9 +41,12 @@ class MyApp(ShowBase):
     def setText(self, textEntered):
         self.textObject.setText(textEntered)
         if hasattr(self, 'battle'):
-            self.battle.clear_scene()
-        self.battle = BattleLoader(textEntered, self)
-        self.battle.render_scene(0)
+            self.battle.reset_ships()
+        try:
+            self.battle = Battle(textEntered, self)
+            self.battle.render_turn(0)
+        except FileNotFoundError:
+            print('Failed to load file: ', textEntered)
 
     # Define a procedure to mvoe the camera.
     def spinCameraTask(self, task):

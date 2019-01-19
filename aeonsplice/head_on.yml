@@ -2,31 +2,25 @@
 ## WIP Data Format ##
 #####################
 
-battle:
-    players:
-        - id: 0
-          color: red
-        - id: 1
-          color: blue
+players:
+  - id: 0
+    color: red
+  - id: 1
+    color: blue
+turns:
+  - time: 0
     ships:
-        - id: sphere
-          model: sphere
-        - id: cube
-          model: cube
-    turns:
-        - time: 0
-          ships:
-              - player: 0
-                ship: sphere
-                position: {x: -5, y: 0, z: 0}
-              - player: 1
-                ship: cube
-                position: {x: 5, y: 0, z: 0}
-        - time: 1
-          ships:
-              - player: 0
-                ship: sphere
-                position: {x: -3, y: 0, z: 0}
-              - player: 1
-                ship: cube
-                position: {x: 3, y: 0, z: 0}
+      - id: sphere
+        player_id: 0
+        position: {x: -5, y: 0, z: 0}
+      - id: cube
+        player_id: 1
+        position: {x: 5, y: 0, z: 0}
+  - time: 1
+    ships:
+      - id: sphere
+        player_id: 0
+        position: {x: -3, y: 0, z: 0}
+      - id: cube
+        player_id: 1
+        position: {x: 3, y: 0, z: 0}
