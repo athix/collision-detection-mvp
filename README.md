@@ -22,4 +22,3 @@ Minimal codebase to visualize and simulate continuous collision detection.
   - [ ] 2 body head-on collision
   - [ ] 3d game of pool (multiple indirect collisions, no gravity)
   - [ ] 2d game of pool (gravity + immovable table)
-

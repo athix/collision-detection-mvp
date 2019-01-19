@@ -17,6 +17,9 @@ class Ship:
         self.model.reparentTo(app.render)
         self.model.setScale(0.25, 0.25, 0.25)
 
+    def detach(self):
+        self.model.removeNode()
+
     def setPosition(self, position):
         x = position['x']
         y = position['y']
@@ -44,3 +47,7 @@ class BattleLoader:
             print("Turn does not match time!")
         for ship in current_turn['ships']:
             self.ships[ship['ship']].setPosition(ship['position'])
+
+    def clear_scene(self):
+        for key, ship in self.ships.items():
+            ship.detach()

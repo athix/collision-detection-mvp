@@ -10,4 +10,3 @@ print(yaml.dump(example_file))
 
 for player in example_file['battle']['players']:
     print(player['color'])
-
