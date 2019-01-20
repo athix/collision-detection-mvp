@@ -7,6 +7,7 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 # from battleloader import BattleLoader
 from battle import Battle
+from gamefsm import GameFSM
 
 class MyApp(ShowBase):
     def __init__(self):
@@ -15,19 +16,8 @@ class MyApp(ShowBase):
         # Disable camera controls.
         self.disableMouse()
 
-        self.textObject = OnscreenText(
-            pos = (0.95, -0.95),
-            scale = 0.07,
-            fg = (1, 0.5, 0.5, 1),
-            align = TextNode.ACenter,
-            mayChange = 1)
-
-        self.entry = DirectEntry(
-            text = "",
-            scale = .05,
-            command = self.setText,
-            numLines = 1,
-            focus = 0)
+        self.gameFSM = GameFSM(self)
+        self.gameFSM.request('MainMenu')
 
         # self.battle = BattleLoader('head_on.yml', self)
         # battle.render_scene(1)
@@ -38,15 +28,15 @@ class MyApp(ShowBase):
         # Add the spinCameraTask procedure to the task manager.
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
-    def setText(self, textEntered):
-        self.textObject.setText(textEntered)
-        if hasattr(self, 'battle'):
-            self.battle.reset_ships()
-        try:
-            self.battle = Battle(textEntered, self)
-            self.battle.render_turn(0)
-        except FileNotFoundError:
-            print('Failed to load file: ', textEntered)
+    # def setText(self, textEntered):
+    #     self.textObject.setText(textEntered)
+    #     if hasattr(self, 'battle'):
+    #         self.battle.reset_ships()
+    #     try:
+    #         self.battle = Battle(textEntered, self)
+    #         self.battle.render_turn(0)
+    #     except FileNotFoundError:
+    #         print('Failed to load file: ', textEntered)
 
     # Define a procedure to mvoe the camera.
     def spinCameraTask(self, task):
