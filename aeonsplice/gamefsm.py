@@ -57,8 +57,10 @@ class GameFSM(FSM):
             self.turnText.setText('Turn: ' + str(self.turn))
             if self.turn == 0:
                 self.prevButton['state'] = DGG.DISABLED
+                self.prevButton.hide()
             if self.turn == self.battle.maxTurns():
                 self.nextButton['state'] = DGG.DISABLED
+                self.nextButton.hide()
         except FileNotFoundError:
             print('Failed to load file: ', filename)
             self.forceTransition('MainMenu')
@@ -80,8 +82,10 @@ class GameFSM(FSM):
         self.battle.render_turn(self.turn)
         if self.turn == 0:
             self.prevButton['state'] = DGG.DISABLED
+            self.prevButton.hide()
         if self.turn != self.battle.maxTurns():
             self.nextButton['state'] = DGG.NORMAL
+            self.nextButton.show()
     def nextTurn(self):
         self.turn += 1
         self.turnText.setText('Turn: ' + str(self.turn))
@@ -89,5 +93,7 @@ class GameFSM(FSM):
         self.battle.render_turn(self.turn)
         if self.turn != 0:
             self.prevButton['state'] = DGG.NORMAL
+            self.prevButton.show()
         if self.turn == self.battle.maxTurns():
             self.nextButton['state'] = DGG.DISABLED
+            self.nextButton.hide()
