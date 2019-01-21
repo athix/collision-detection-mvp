@@ -16,11 +16,3 @@ turns:
       - id: sphere
         player_id: 1
         position: {x: 5, y: 0, z: 0}
-  - time: 1
-    ships:
-      - id: cube
-        player_id: 0
-        position: {x: -3, y: 0, z: 0}
-      - id: sphere
-        player_id: 1
-        position: {x: 3, y: 0, z: 0}

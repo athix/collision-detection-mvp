@@ -36,6 +36,9 @@ class Battle:
                 ship.remove()
         self.ships = {}
 
+    def maxTurns(self):
+        return (len(self.data['turns']) - 1)
+
 class Player:
     def __init__(self, player_data):
         self.id = player_data['id']

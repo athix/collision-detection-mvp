@@ -31,20 +31,63 @@ class GameFSM(FSM):
         self.statusText.setText('Battle: ' + filename)
         self.backButton = DirectButton(
             text = 'Back',
-            pos = (-0.95, 0, -0.95),
+            pos = (-1, 0, -0.95),
             scale = .05,
             command = self.goBack)
+        self.prevButton = DirectButton(
+            text = 'Prev Turn',
+            pos = (-1, 0, 0.95),
+            scale = .05,
+            command = self.previousTurn)
+        self.nextButton = DirectButton(
+            text = 'Next Turn',
+            pos = (-0.70, 0, 0.95),
+            scale = .05,
+            command = self.nextTurn)
+        self.turnText = OnscreenText(
+            pos = (-0.45, 0.95),
+            scale = 0.07,
+            fg = (0.5, 1, 0.5, 1),
+            align = TextNode.ACenter,
+            mayChange = 1)
         try:
             self.battle = Battle(filename, self.app)
-            self.battle.render_turn(0)
-        except:
+            self.turn = self.battle.maxTurns()
+            self.battle.render_turn(self.turn)
+            self.turnText.setText('Turn: ' + str(self.turn))
+            if self.turn == 0:
+                self.prevButton['state'] = DGG.DISABLED
+            if self.turn == self.battle.maxTurns():
+                self.nextButton['state'] = DGG.DISABLED
+        except FileNotFoundError:
             print('Failed to load file: ', filename)
             self.forceTransition('MainMenu')
     def exitBattle(self):
         self.backButton.destroy()
+        self.prevButton.destroy()
+        self.nextButton.destroy()
+        self.turnText.destroy()
         if hasattr(self, 'battle'):
             self.battle.reset_ships()
     def setBattle(self, textEntered):
         self.request('Battle', textEntered)
     def goBack(self):
         self.request('MainMenu')
+    def previousTurn(self):
+        self.turn -= 1
+        self.turnText.setText('Turn: ' + str(self.turn))
+        self.battle.reset_ships()
+        self.battle.render_turn(self.turn)
+        if self.turn == 0:
+            self.prevButton['state'] = DGG.DISABLED
+        if self.turn != self.battle.maxTurns():
+            self.nextButton['state'] = DGG.NORMAL
+    def nextTurn(self):
+        self.turn += 1
+        self.turnText.setText('Turn: ' + str(self.turn))
+        self.battle.reset_ships()
+        self.battle.render_turn(self.turn)
+        if self.turn != 0:
+            self.prevButton['state'] = DGG.NORMAL
+        if self.turn == self.battle.maxTurns():
+            self.nextButton['state'] = DGG.DISABLED
