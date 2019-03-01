@@ -24,7 +24,7 @@ class GameFSM(FSM):
             scale = .05,
             command = self.setBattle,
             numLines = 1,
-            focus = 0)
+            focus = 1)
     def exitMainMenu(self):
         self.battleEntry.destroy()
     def enterBattle(self, filename):
