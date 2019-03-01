@@ -17,6 +17,15 @@ class GameFSM(FSM):
         self.defaultTransitions = {
             'MainMenu': ['Battle'],
             'Battle': ['MainMenu']}
+        self.app.cTraverser = CollisionTraverser()
+        self.app.cHandler = CollisionHandlerQueue()
+        self.app.pickerNode = CollisionNode('mouseRay')
+        self.app.pickerNP = self.app.camera.attachNewNode(self.app.pickerNode)
+        self.app.pickerNode.setFromCollideMask(GeomNode.getDefaultCollideMask())
+        self.app.pickerRay = CollisionRay()
+        self.app.pickerNode.addSolid(self.app.pickerRay)
+        self.app.cTraverser.addCollider(self.app.pickerNP, self.app.cHandler)
+        self.app.accept('mouse1', self.mouseClicky)
     def enterMainMenu(self):
         self.statusText.setText('Main Menu')
         self.battleEntry = DirectEntry(
@@ -65,6 +74,7 @@ class GameFSM(FSM):
             print('Failed to load file: ', filename)
             self.forceTransition('MainMenu')
     def exitBattle(self):
+        self.deselectShip()
         self.backButton.destroy()
         self.prevButton.destroy()
         self.nextButton.destroy()
@@ -78,6 +88,7 @@ class GameFSM(FSM):
     def previousTurn(self):
         self.turn -= 1
         self.turnText.setText('Turn: ' + str(self.turn))
+        self.deselectShip()
         self.battle.reset_ships()
         self.battle.render_turn(self.turn)
         if self.turn == 0:
@@ -89,6 +100,7 @@ class GameFSM(FSM):
     def nextTurn(self):
         self.turn += 1
         self.turnText.setText('Turn: ' + str(self.turn))
+        self.deselectShip()
         self.battle.reset_ships()
         self.battle.render_turn(self.turn)
         if self.turn != 0:
@@ -97,3 +109,57 @@ class GameFSM(FSM):
         if self.turn == self.battle.maxTurns():
             self.nextButton['state'] = DGG.DISABLED
             self.nextButton.hide()
+    def mouseClicky(self):
+        if hasattr(self, 'battle'):
+            mpos = self.app.mouseWatcherNode.getMouse()
+            self.app.pickerRay.setFromLens(self.app.camNode, mpos.getX(), mpos.getY())
+            self.app.cTraverser.traverse(self.app.render)
+            if self.app.cHandler.getNumEntries() > 0:
+                # This is so we get the closest object.
+                self.app.cHandler.sortEntries()
+                pickedObj = self.app.cHandler.getEntry(0).getIntoNodePath()
+                pickedObj = pickedObj.findNetTag('shipID')
+                if not pickedObj.isEmpty():
+                    self.selectShip(pickedObj)
+    def selectShip(self, obj):
+        # You ever write code and immediately feel guilty for how bad it is?
+        self.deselectShip()
+        ship = self.battle.ships[obj.getTag('shipID')]
+        player = self.battle.players[ship.player_id]
+        self.shipFrame = DirectFrame(
+            frameColor = (0.2, 0, 0, 1),
+            frameSize = (-0.5, 0.5, -0.5, 0.5),
+            pos = (0, 0, 0))
+        self.closeShipButton = DirectButton(
+            parent = self.shipFrame,
+            text = 'Close',
+            pos = (.35, 0, -.45),
+            scale = .05,
+            command = self.deselectShip)
+        self.shipText = OnscreenText(
+            parent = self.shipFrame,
+            pos = (0, 0.4),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ACenter,
+            mayChange = 0,
+            text = 'Ship: ' + ship.id)
+        self.playerText = OnscreenText(
+            parent = self.shipFrame,
+            pos = (0, 0.3),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ACenter,
+            mayChange = 0,
+            text = 'Player: ' + player.color)
+        self.posText = OnscreenText(
+            parent = self.shipFrame,
+            pos = (0, 0.2),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ACenter,
+            mayChange = 0,
+            text = 'Pos: ' + str(ship.position))
+    def deselectShip(self):
+        if hasattr(self, 'shipFrame'):
+            self.shipFrame.destroy()

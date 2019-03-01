@@ -66,6 +66,7 @@ class Ship:
         self.model.reparentTo(app.render)
         self.model.setScale(0.25, 0.25, 0.25)
         self.model.setPos(self.x, self.y, self.z)
+        self.model.setTag('shipID', self.id)
 
     def remove(self):
         self.model.removeNode()
