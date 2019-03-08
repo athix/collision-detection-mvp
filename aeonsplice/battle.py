@@ -12,6 +12,7 @@ class Battle:
         # Initialize instance variables
         self.app = app
         self.players = {}
+        self.output_filename = filename
 
         # Load players from file data
         for player in self.data['players']:
@@ -39,6 +40,10 @@ class Battle:
     def maxTurns(self):
         return (len(self.data['turns']) - 1)
 
+    def saveToFile(self):
+        with open(self.output_filename, 'w') as stream:
+            yaml.dump(self.data, stream, default_flow_style=False)
+
 class Player:
     def __init__(self, player_data):
         self.id = player_data['id']
@@ -49,10 +54,22 @@ class Ship:
         self.id = ship_data['id']
         self.player_id = ship_data['player_id']
         self.position = ship_data['position']
+        if 'move' in ship_data:
+            self.move = ship_data['move']
+        else:
+            self.move = None
         self.model_filename = self.getModelFilename(self.id)
         self.x = self.position['x']
         self.y = self.position['y']
         self.z = self.position['z']
+        if self.move is not None:
+            self.dx = self.move['x']
+            self.dy = self.move['y']
+            self.dz = self.move['z']
+        else:
+            self.dx = 0
+            self.dy = 0
+            self.dz = 0
 
     def getModelFilename(self, ship_id):
         models = {

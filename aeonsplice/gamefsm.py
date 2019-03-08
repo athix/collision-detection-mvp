@@ -29,7 +29,7 @@ class GameFSM(FSM):
     def enterMainMenu(self):
         self.statusText.setText('Main Menu')
         self.battleEntry = DirectEntry(
-            text = '',
+            initialText = 'head_on.yml',
             scale = .05,
             command = self.setBattle,
             numLines = 1,
@@ -81,6 +81,7 @@ class GameFSM(FSM):
         self.turnText.destroy()
         if hasattr(self, 'battle'):
             self.battle.reset_ships()
+            self.battle.saveToFile()
     def setBattle(self, textEntered):
         self.request('Battle', textEntered)
     def goBack(self):
@@ -129,16 +130,16 @@ class GameFSM(FSM):
         self.shipFrame = DirectFrame(
             frameColor = (0.2, 0, 0, 1),
             frameSize = (-0.5, 0.5, -0.5, 0.5),
-            pos = (0, 0, 0))
+            pos = (-0.75, 0, 0.4))
         self.closeShipButton = DirectButton(
             parent = self.shipFrame,
             text = 'Close',
-            pos = (.35, 0, -.45),
-            scale = .05,
+            pos = (0.35, 0, -0.45),
+            scale = 0.05,
             command = self.deselectShip)
         self.shipText = OnscreenText(
             parent = self.shipFrame,
-            pos = (-.45, 0.4),
+            pos = (-0.45, 0.4),
             scale = 0.07,
             fg = (0.5, 0.7, 1, 1),
             align = TextNode.ALeft,
@@ -146,20 +147,39 @@ class GameFSM(FSM):
             text = 'Ship: ' + ship.id)
         self.playerText = OnscreenText(
             parent = self.shipFrame,
-            pos = (-.45, 0.3),
+            pos = (-0.45, 0.3),
             scale = 0.07,
             fg = (0.5, 0.7, 1, 1),
             align = TextNode.ALeft,
             mayChange = 0,
             text = 'Player: ' + player.color)
-        self.posText = OnscreenText(
+        self.xInput = DirectEntry(
             parent = self.shipFrame,
-            pos = (-.45, 0.2),
-            scale = 0.07,
-            fg = (0.5, 0.7, 1, 1),
-            align = TextNode.ALeft,
-            mayChange = 0,
-            text = 'Pos: ' + str(ship.position))
+            initialText = str(ship.dx),
+            pos = (-0.45, 0, 0.2),
+            scale = 0.05,
+            numLines = 1,
+            command = self.setShipX)
+        self.yInput = DirectEntry(
+            parent = self.shipFrame,
+            initialText = str(ship.dy),
+            pos = (-0.45, 0, 0.1),
+            scale = 0.05,
+            numLines = 1,
+            command = self.setShipY)
+        self.zInput = DirectEntry(
+            parent = self.shipFrame,
+            initialText = str(ship.dz),
+            pos = (-0.45, 0, 0),
+            scale = 0.05,
+            numLines = 1,
+            command = self.setShipZ)
     def deselectShip(self):
         if hasattr(self, 'shipFrame'):
             self.shipFrame.destroy()
+    def setShipX(self, textEntered):
+        print('Set Ship X: ' + textEntered)
+    def setShipY(self, textEntered):
+        print('Set Ship Y: ' + textEntered)
+    def setShipZ(self, textEntered):
+        print('Set Ship Z: ' + textEntered)
