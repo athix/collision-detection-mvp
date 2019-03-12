@@ -153,33 +153,80 @@ class GameFSM(FSM):
             align = TextNode.ALeft,
             mayChange = 0,
             text = 'Player: ' + player.color)
+        self.shipPosition = OnscreenText(
+            parent = self.shipFrame,
+            pos = (-0.45, 0.2),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ALeft,
+            mayChange = 0,
+            text = 'X: ' + str(ship.x) + '\tY: ' + str(ship.y) + '\tZ: ' + str(ship.z))
+        self.dxLabel = OnscreenText(
+            parent = self.shipFrame,
+            pos = (-0.45, 0.1),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ALeft,
+            mayChange = 0,
+            text = 'dX:')
+        self.dyLabel = OnscreenText(
+            parent = self.shipFrame,
+            pos = (-0.45, 0),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ALeft,
+            mayChange = 0,
+            text = 'dY:')
+        self.dzLabel = OnscreenText(
+            parent = self.shipFrame,
+            pos = (-0.45, -0.1),
+            scale = 0.07,
+            fg = (0.5, 0.7, 1, 1),
+            align = TextNode.ALeft,
+            mayChange = 0,
+            text = 'dZ:')
         self.xInput = DirectEntry(
             parent = self.shipFrame,
             initialText = str(ship.dx),
-            pos = (-0.45, 0, 0.2),
+            pos = (-0.33, 0, 0.1),
             scale = 0.05,
             numLines = 1,
             command = self.setShipX)
         self.yInput = DirectEntry(
             parent = self.shipFrame,
             initialText = str(ship.dy),
-            pos = (-0.45, 0, 0.1),
+            pos = (-0.33, 0, 0),
             scale = 0.05,
             numLines = 1,
             command = self.setShipY)
         self.zInput = DirectEntry(
             parent = self.shipFrame,
             initialText = str(ship.dz),
-            pos = (-0.45, 0, 0),
+            pos = (-0.33, 0, -0.1),
             scale = 0.05,
             numLines = 1,
             command = self.setShipZ)
+        self.currentShip = ship
     def deselectShip(self):
         if hasattr(self, 'shipFrame'):
             self.shipFrame.destroy()
+        if hasattr(self, 'currentShip'):
+            self.currentShip = None
     def setShipX(self, textEntered):
-        print('Set Ship X: ' + textEntered)
+        try:
+            self.currentShip.dx = int(textEntered)
+            self.currentShip.saveMove(self.battle)
+        except:
+            print('Invalid input for dX')
     def setShipY(self, textEntered):
-        print('Set Ship Y: ' + textEntered)
+        try:
+            self.currentShip.dy = int(textEntered)
+            self.currentShip.saveMove(self.battle)
+        except:
+            print('Invalid input for dY')
     def setShipZ(self, textEntered):
-        print('Set Ship Z: ' + textEntered)
+        try:
+            self.currentShip.dz = int(textEntered)
+            self.currentShip.saveMove(self.battle)
+        except:
+            print('Invalid input for dZ')

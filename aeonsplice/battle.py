@@ -13,6 +13,7 @@ class Battle:
         self.app = app
         self.players = {}
         self.output_filename = filename
+        self.current_turn = None
 
         # Load players from file data
         for player in self.data['players']:
@@ -30,6 +31,8 @@ class Battle:
             temp = Ship(ship)
             temp.render(self.app)
             self.ships[temp.id] = temp
+        # Save current turn for reference in other functions
+        self.current_turn = turn
 
     def reset_ships(self):
         if hasattr(self, 'ships'):
@@ -85,5 +88,14 @@ class Ship:
         self.model.setPos(self.x, self.y, self.z)
         self.model.setTag('shipID', self.id)
 
+    def saveMove(self, battle):
+        ships = battle.data['turns'][battle.current_turn]['ships']
+        for ship in ships:
+            if ship['id'] == self.id:
+                ship_index = ships.index(ship)
+        battle.data['turns'][battle.current_turn]['ships'][ship_index]['move'] = {
+            'x':self.dx,
+            'y':self.dy,
+            'z':self.dz}
     def remove(self):
         self.model.removeNode()
