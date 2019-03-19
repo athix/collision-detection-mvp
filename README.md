@@ -25,7 +25,7 @@ proof-of-concept.
 - [X] ~Pick a visualizer & language~ **(Python w/ Panda3D)**
 - [X] ~Data format to store object meta and positional information.~ **(YAML)**
 - [X] ~Visualizer for data format.~
-- [ ] Turn input
+- [X] ~Turn input~
 - [ ] Turn processing (simple input/direct 3d translations, no collision)
 - [ ] Collision functions
   - [ ] Fast path overlap detection (render paths and max radius of objects as 3d objects, check for overlap)

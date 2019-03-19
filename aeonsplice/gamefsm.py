@@ -206,12 +206,25 @@ class GameFSM(FSM):
             scale = 0.05,
             numLines = 1,
             command = self.setShipZ)
+        if self.battle.current_turn != self.battle.maxTurns():
+            self.xInput['state'] = DGG.DISABLED
+            self.yInput['state'] = DGG.DISABLED
+            self.zInput['state'] = DGG.DISABLED
+        else:
+            self.processTurnButton = DirectButton(
+                parent = self.shipFrame,
+                text = 'Process',
+                pos = (-0.3, 0, -0.45),
+                scale = 0.05,
+                command = self.processTurn)
         self.currentShip = ship
     def deselectShip(self):
         if hasattr(self, 'shipFrame'):
             self.shipFrame.destroy()
         if hasattr(self, 'currentShip'):
             self.currentShip = None
+    def processTurn(self):
+        print('How the turn tables.')
     def setShipX(self, textEntered):
         try:
             self.currentShip.dx = int(textEntered)
