@@ -224,7 +224,27 @@ class GameFSM(FSM):
         if hasattr(self, 'currentShip'):
             self.currentShip = None
     def processTurn(self):
-        print('How the turn tables.')
+        if self.battle.current_turn != self.battle.maxTurns():
+            raise Exception('You cannot process past turns!')
+        for key, ship in self.battle.ships.items():
+            if ship.move is None:
+                print('How the turn tables.')
+                return
+        next_ships = []
+        for key, ship in self.battle.ships.items():
+            temp = {
+                'id': ship.id,
+                'player_id': ship.player_id,
+                'position': {
+                    'x': ship.x + ship.dx,
+                    'y': ship.y + ship.dy,
+                    'z': ship.z + ship.dz}}
+            next_ships.append(temp)
+        next_turn = {
+            'time': self.battle.current_turn+1,
+            'ships': next_ships}
+        self.battle.data['turns'].append(next_turn)
+        self.nextTurn()
     def setShipX(self, textEntered):
         try:
             self.currentShip.dx = int(textEntered)

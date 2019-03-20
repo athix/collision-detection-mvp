@@ -26,7 +26,7 @@ proof-of-concept.
 - [X] ~Data format to store object meta and positional information.~ **(YAML)**
 - [X] ~Visualizer for data format.~
 - [X] ~Turn input~
-- [ ] Turn processing (simple input/direct 3d translations, no collision)
+- [X] ~Turn processing (simple input/direct 3d translations, no collision)~
 - [ ] Collision functions
   - [ ] Fast path overlap detection (render paths and max radius of objects as 3d objects, check for overlap)
   - [ ] Precise path overlap/fast collision detection (Same as above, but as a function of time, skip above if performant enough)

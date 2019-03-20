@@ -93,9 +93,11 @@ class Ship:
         for ship in ships:
             if ship['id'] == self.id:
                 ship_index = ships.index(ship)
-        battle.data['turns'][battle.current_turn]['ships'][ship_index]['move'] = {
+        move_dict = {
             'x':self.dx,
             'y':self.dy,
             'z':self.dz}
+        battle.data['turns'][battle.current_turn]['ships'][ship_index]['move'] = move_dict
+        self.move = move_dict
     def remove(self):
         self.model.removeNode()
