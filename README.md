@@ -6,8 +6,10 @@ Minimal codebase to visualize and simulate continuous collision detection.
 
 * Python3
 * Pip3
-* PyYAML - `pip3 install pyyaml`
-* Panda3D - `pip3 install panda3d`
+
+## Installation
+
+`pip3 install -r requirements.txt`
 
 ## Usage
 
