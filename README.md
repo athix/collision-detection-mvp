@@ -2,6 +2,16 @@
 
 Minimal codebase to visualize and simulate continuous collision detection.
 
+**This code has been deprecated in favor of HTML5 using BabylonJS, VueJS, and Ruby on Rails.**
+
+## Screenshots
+
+![Screenshot of the Main Menu](README-main_menu.png?raw=true "Main Menu")
+
+![Screenshot of the game interface with an entity selected](README-head_on.png?raw=true "Entity selection")
+
+![Screenshot of alternate game loaded from a different yaml file](README-alt_head_on.png?raw=true "Alternate game file")
+
 ## Requirements
 
 * Python3
